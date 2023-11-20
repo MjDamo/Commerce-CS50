@@ -1,3 +1,85 @@
-body {
-    padding: 10px;
+@import 'https://fonts.googleapis.com/css?family=Raleway';
+
+:root{
+    font-family: Roboto, sans-serif;
+    background-color: #164E6A;
+}
+
+html, body
+{
+    margin: 0px;
+    min-width: 500px;
+}
+
+div.container
+{
+    font-family: Raleway, sans-serif;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 4em;
+}
+
+div.container a
+{
+    color: #FFF;
+    text-decoration: none;
+    font: 20px Raleway;
+    margin: 0px 10px;
+    position: relative;
+    z-index: 0;
+    cursor: pointer;
+}
+
+.green
+{
+    background: #4caf50;
+}
+
+/* Border X get width  */
+div.borderXwidth a:before, div.borderXwidth a:after
+{
+    position: absolute;
+    opacity: 0;
+    width: 0%;
+    height: 2px;
+    content: '';
+    background: #FFF;
+    transition: all 0.3s;
+}
+
+div.borderXwidth a:before
+{
+    left: 0px;
+    top: 0px;
+}
+
+div.borderXwidth a:after
+{
+    right: 0px;
+    bottom: 0px;
+}
+
+div.borderXwidth a:hover:before, div.borderXwidth a:hover:after
+{
+    opacity: 1;
+    width: 100%;
+}
+
+.headtitle
+{
+    font-family: Roboto, sans-serif;
+    font-size: 4em;
+    margin: 1px 0 0 10px;
+    text-align: left;
+    color: darkgreen;
+    display: flex;
+}
+
+.welcometitle
+{
+    color: #FFFFFF;
+    font-size: 16px;
+    justify-content: right;
+    vertical-align: top;
+    margin: 0 10px 0 auto;
 }
