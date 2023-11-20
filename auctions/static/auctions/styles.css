@@ -95,7 +95,6 @@ div.borderXwidth a:hover:before, div.borderXwidth a:hover:after
     display: block;
     background-color: #FFFFFF;
     width: 350px;
-    height: 400px;
     margin: 100px auto;
     padding: 10px;
     border: 2px black;
