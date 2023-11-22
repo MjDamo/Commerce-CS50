@@ -1,0 +1,54 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+
+
+    <div class="bodyBox">
+        <div class="loginBox">
+            <h1 class="lineBlock">Create New Listing</h1>
+            {% if message %}
+                <div class="lineBlock">{{ message }}</div>
+            {% endif %}
+
+            <form action="{% url 'listing' %}" method="post">
+            {% csrf_token %}
+                <div>
+                    <label>
+                        Title:
+                        <input class="lineBlock bo" autofocus type="text" name="title" placeholder="Title">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Description:
+                        <textarea class="lineBlock bo" name="description" cols="120" rows="3" placeholder="Description..."></textarea>
+                    </label>
+                </div>
+{#                <div>#}
+{#                    <label>#}
+{#                        Category:#}
+{#                        <input class="lineBlock bo" type="text" name="category">#}
+{#                    </label>#}
+{#                </div>#}
+                <div>
+                    <label>
+                        Price:
+                        <input class="lineBlock bo" type="number" name="price" placeholder="0.00 $" min=0>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Image URL:
+                        <input class="lineBlock bo" type="text" name="image" placeholder="type your image url">
+                    </label>
+                </div>
+                <input class="lineBlockBTN" type="submit" value="Creat">
+            </form>
+            <div class="massageBlock">
+                    Already have an account? <a style="text-decoration: none; color: red" href="{% url 'login' %}"><strong>LOGIN here</strong></a>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

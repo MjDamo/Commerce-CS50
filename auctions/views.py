@@ -1,10 +1,12 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
-from .models import User
+from .models import User, Category, Listing
+from .forms import ListingForm
 
 
 def index(request):
@@ -61,3 +63,44 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+
+# def listing(request):
+#     if request.method == "POST":
+#         title = request.POST['title']
+#         description = request.POST['description']
+#         auther = request.user
+#         # category = Category.objects.create(request.POST['category'])
+#         price = request.POST['price']
+#         image_url = request.POST['image']
+#
+#         new_list = Listing(
+#             title=title, description=description,
+#             auther=auther,
+#             price=price, imageUrl=image_url,
+#             isActive=True
+#         )
+#         new_list.save()
+#         return redirect('index')
+#     else:
+#         return render(request, "auctions/listing.html", {
+#             "message": "Fuck",
+#         })
+#
+#     return render(request, 'auctions/listing.html')
+
+@login_required
+def listing(request):
+    if request.method == 'POSt':
+        form = ListingForm(request.POST, request.FILES)
+        if form.is_valid():
+            new_list = form.save(commit=False)
+            new_list.owner = request.user
+            new_list.save()
+            form.save_m2m()
+            return redirect('index')
+    else:
+        form = ListingForm()
+    return render(request, 'auctions/listing.html', {
+        'form': form,
+    })

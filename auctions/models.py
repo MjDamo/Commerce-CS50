@@ -7,7 +7,7 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=48)
+    title = models.CharField(max_length=48, unique=True)
 
     def __str__(self):
         return self.title
@@ -19,6 +19,7 @@ class Listing(models.Model):
     )
     title = models.CharField(max_length=100)
     description = models.TextField()
+    image = models.ImageField(upload_to="gallery", blank=True, null=True)
     imageUrl = models.URLField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     isActive = models.BooleanField(default=True)
@@ -29,7 +30,7 @@ class Listing(models.Model):
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='bidder'
     )
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name="category"
+        Category, on_delete=models.SET_NULL, related_name="category", null=True
     )
 
     def __str__(self):

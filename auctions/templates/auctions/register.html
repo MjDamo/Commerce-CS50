@@ -2,10 +2,6 @@
 
 {% block body %}
 
-
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
-
-
     <div class="bodyBox">
     <div class="loginBox">
         <h1 class="lineBlock">Register</h1>
@@ -29,6 +25,9 @@
             </div>
             <input class="lineBlockBTN" type="submit" value="Register">
         </form>
+        <div class="massageBlock">
+                Already have an account? <a style="text-decoration: none; color: red" href="{% url 'login' %}"><strong>LOGIN here</strong></a>
+        </div>
     </div>
     </div>
 {% endblock %}
