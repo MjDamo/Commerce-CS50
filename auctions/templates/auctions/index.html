@@ -2,19 +2,37 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
+{#    <div class="cardBox">#}
+{#        {% for list in active %}#}
+{#            <div class="card">#}
+{#            {% if list.imageUrl %}#}
+{#                <img style="width:100%; height: 55%;" src="{{ list.imageUrl }}" alt="{{ list.title }}||{{ list.description }}">#}
+{#            {% else  %}#}
+{#                <img style="width:100%; height: 55%;" src="{{ list.image.url }}" alt="{{ list.title }}||{{ list.description }}">#}
+{#            {% endif %}#}
+{#            <h1>{{ list.title }}</h1>#}
+{#            <p class="price">Price: ${{ list.price }}</p>#}
+{#            Category: <strong>{{ list.category }}</strong>#}
+{#            <p><button>Show detail</button></p>#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    </div>#}
+
     <div class="cardBox">
-        {% for list in active %}
+        {% for l in list %}
             <div class="card">
-            {% if list.imageUrl %}
-                <img style="width:100%; height: 55%;" src="{{ list.imageUrl }}" alt="{{ list.title }}||{{ list.description }}">
+            {% if l.imageUrl %}
+                <img style="width:100%; height: 55%;" src="{{ l.imageUrl }}" alt="{{ list.title }}||{{ list.description }}">
             {% else  %}
-                <img style="width:100%; height: 55%;" src="{{ list.image.url }}" alt="{{ list.title }}||{{ list.description }}">
+                <img style="width:100%; height: 55%;" src="{{ l.image.url }}" alt="{{ list.title }}||{{ list.description }}">
             {% endif %}
-            <h1>{{ list.title }}</h1>
-            <p class="price">Price: ${{ list.price }}</p>
-            Category: <strong>{{ list.category }}</strong>
+            <h1>{{ l.title }}</h1>
+            <p class="price">Price: ${{ l.price }}</p>
+            Category: <strong>{{ l.category }}</strong>
             <p><button>Show detail</button></p>
             </div>
         {% endfor %}
     </div>
+    <br><br>
+    {% include 'auctions/pagination.html' with page=page_obj %}
 {% endblock %}

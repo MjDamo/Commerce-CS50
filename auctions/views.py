@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView, DetailView
 
 from .models import User, Category, Listing
 from .forms import ListingForm, AddCategory
@@ -130,3 +131,10 @@ def add_category(request):
                 "category": AddCategory(),
                 "message": "Already Exists."
             })
+
+
+class ItemListView(ListView):
+    queryset = Listing.objects.filter(isActive=True)
+    context_object_name = 'list'
+    paginate_by = 2
+    template_name = 'auctions/index.html'

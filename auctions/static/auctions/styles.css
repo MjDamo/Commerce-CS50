@@ -138,6 +138,7 @@ div.borderXwidth a:hover:before, div.borderXwidth a:hover:after
 {
     width: 100%;
     display: flex;
+    justify-content: center;
 }
 
 .card {
