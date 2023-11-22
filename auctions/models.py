@@ -20,7 +20,7 @@ class Listing(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     image = models.ImageField(upload_to="gallery", blank=True, null=True)
-    imageUrl = models.URLField()
+    imageUrl = models.URLField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     isActive = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)

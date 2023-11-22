@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
 from .models import User, Category, Listing
-from .forms import ListingForm
+from .forms import ListingForm, AddCategory
 
 
 def index(request):
@@ -98,9 +98,32 @@ def listing(request):
             new_list.owner = request.user
             new_list.save()
             form.save_m2m()
-            return redirect('index')
+            return HttpResponseRedirect(reverse("index"))
     else:
-        form = ListingForm()
+        return render(request, 'auctions/listing.html', {
+            'form': ListingForm(),
+            'category': AddCategory(),
+        })
     return render(request, 'auctions/listing.html', {
         'form': form,
+        'category': AddCategory(),
     })
+
+
+@login_required
+def add_category(request):
+    if request.method == "POST":
+        category = AddCategory(request.POST)
+        if category.is_valid():
+            category.save()
+            return render(request, "auctions/listing.html", {
+                "form": ListingForm(),
+                "category": AddCategory(),
+                "message": "Created Successful!"
+            })
+        else:
+            return render(request, "auctions/listing.html", {
+                "form": ListingForm(),
+                "category": AddCategory(),
+                "message": "Already Exists."
+            })
