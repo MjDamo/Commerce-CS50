@@ -1,32 +1,20 @@
 {% extends "auctions/layout.html" %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
-
-    <div class="bodyBox">
-        <div class="loginBox">
-            {% for list in active %}
-                {% if list.image.url %}
-                	<div class="imgBox">
-                        <img src="{{ list.image.url }}" alt="{{ list.title }}||{{ list.description }}">
-                    </div>
-                {% else %}
-                    <div>
-                        <img src="{{ list.imageUrl }}" alt="{{ list.title }}||{{ list.description }}">
-                    </div>
-                {% endif %}
-            <div class="lineBlock">
-                <div>
-                    <h2>{{ list.title }}</h2>
-                </div>
-                <div >
-                    <input class="lineBlock bo" type="password" name="password" placeholder="Password">
-                </div>
-                <input class="lineBlockBTN" type="submit" value="Login">
+    <div class="cardBox">
+        {% for list in active %}
+            <div class="card">
+            {% if list.imageUrl %}
+                <img style="width:100%; height: 55%;" src="{{ list.imageUrl }}" alt="{{ list.title }}||{{ list.description }}">
+            {% else  %}
+                <img style="width:100%; height: 55%;" src="{{ list.image.url }}" alt="{{ list.title }}||{{ list.description }}">
+            {% endif %}
+            <h1>{{ list.title }}</h1>
+            <p class="price">Price: ${{ list.price }}</p>
+            Category: <strong>{{ list.category }}</strong>
+            <p><button>Show detail</button></p>
             </div>
-            <div class="massageBlock">
-                Don't have an account? <a style="text-decoration: none; color: red" href="{% url 'register' %}"><strong>REGISTER here</strong></a>
-            </div>
-            {% endfor %}
-        </div>
+        {% endfor %}
     </div>
 {% endblock %}
