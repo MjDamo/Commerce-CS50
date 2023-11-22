@@ -2,5 +2,31 @@
 
 {% block body %}
 
-
+    <div class="bodyBox">
+        <div class="loginBox">
+            {% for list in active %}
+                {% if list.image.url %}
+                	<div class="imgBox">
+                        <img src="{{ list.image.url }}" alt="{{ list.title }}||{{ list.description }}">
+                    </div>
+                {% else %}
+                    <div>
+                        <img src="{{ list.imageUrl }}" alt="{{ list.title }}||{{ list.description }}">
+                    </div>
+                {% endif %}
+            <div class="lineBlock">
+                <div>
+                    <h2>{{ list.title }}</h2>
+                </div>
+                <div >
+                    <input class="lineBlock bo" type="password" name="password" placeholder="Password">
+                </div>
+                <input class="lineBlockBTN" type="submit" value="Login">
+            </div>
+            <div class="massageBlock">
+                Don't have an account? <a style="text-decoration: none; color: red" href="{% url 'register' %}"><strong>REGISTER here</strong></a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

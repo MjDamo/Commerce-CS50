@@ -10,5 +10,5 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Listing)
 class ListingAdmin(admin.ModelAdmin):
-    list_display = ['title', 'auther', 'price', 'date', 'isActive']
+    list_display = ['title', 'auther', 'price', 'category', 'date', 'isActive']
     

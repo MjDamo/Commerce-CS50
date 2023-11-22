@@ -10,7 +10,10 @@ from .forms import ListingForm, AddCategory
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/index.html", {
+        "active": Listing.objects.filter(isActive=True),
+        "closed": Listing.objects.filter(isActive=False)
+    })
 
 
 def login_view(request):
@@ -91,11 +94,11 @@ def register(request):
 
 @login_required
 def listing(request):
-    if request.method == 'POSt':
+    if request.method == 'POST':
         form = ListingForm(request.POST, request.FILES)
         if form.is_valid():
             new_list = form.save(commit=False)
-            new_list.owner = request.user
+            new_list.auther = request.user
             new_list.save()
             form.save_m2m()
             return HttpResponseRedirect(reverse("index"))

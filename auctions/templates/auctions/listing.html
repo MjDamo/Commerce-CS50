@@ -49,6 +49,9 @@
 {#            </div>#}
 {#        </div>#}
 {#    </div>#}
+    {% if message %}
+                <div class="lineBlock">{{ message }}</div>
+            {% endif %}
     <div>
         <h2>Create a New Listing</h2>  <br>
             <form action="{% url 'listing' %}" method="post" enctype="multipart/form-data">
