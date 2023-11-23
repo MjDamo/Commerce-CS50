@@ -1,5 +1,5 @@
 from django import forms
-from .models import Listing, Category
+from .models import Listing, Category, Comment
 
 
 class ListingForm(forms.ModelForm):
@@ -28,4 +28,13 @@ class AddCategory(forms.ModelForm):
         }
         labels = {
             'title': "Title"
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Write your comment..."})
         }

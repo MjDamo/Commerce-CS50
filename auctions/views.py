@@ -1,13 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
+from django.views.decorators.http import require_POST
 
 from .models import User, Category, Listing
-from .forms import ListingForm, AddCategory
+from .forms import ListingForm, AddCategory, CommentForm
 
 
 def index(request):
@@ -138,3 +139,22 @@ class ItemListView(ListView):
     context_object_name = 'list'
     paginate_by = 2
     template_name = 'auctions/index.html'
+
+
+@require_POST
+def list_comment(request, list_id):
+    item_list = get_object_or_404(request, id=list_id)
+    comment = None
+    form = CommentForm(data=request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.item = item_list
+        comment.save()
+
+        context = {
+            'item_list': item_list,
+            'form': form,
+            'comment': comment,
+        }
+        return render(request, 'auctions/comment.html', context)
+

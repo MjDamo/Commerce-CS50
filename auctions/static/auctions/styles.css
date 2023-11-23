@@ -7,8 +7,8 @@
 
 html, body
 {
-    margin: 0px;
-    min-width: 500px;
+    margin: 0;
+    min-width: 700px;
 }
 
 div.container
@@ -32,6 +32,7 @@ div.container a
 
 .green
 {
+    width: 100%;
     background: #4caf50;
 }
 
@@ -145,6 +146,7 @@ div.borderXwidth a:hover:before, div.borderXwidth a:hover:after
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     max-width: 300px;
     min-width: 300px;
+    min-height: 530px;
     margin: 25px 10px 0 10px;
     text-align: center;
     background-color: gainsboro;
