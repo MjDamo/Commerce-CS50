@@ -29,7 +29,7 @@
             <h1>{{ l.title }}</h1>
             <p class="price">Price: ${{ l.price }}</p>
             Category: <strong>{{ l.category }}</strong>
-            <p><button>Show detail</button></p>
+            <p><button><a href="{% url 'list_detail' list_id=l.pk %}">Show detail</a></button></p>
             </div>
         {% endfor %}
     </div>

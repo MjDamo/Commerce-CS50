@@ -6,9 +6,10 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_POST
+from decimal import Decimal
 
-from .models import User, Category, Listing
-from .forms import ListingForm, AddCategory, CommentForm
+from .models import User, Category, Listing, Comment, Bid, Watchlist
+from .forms import ListingForm, AddCategory, CommentForm, BidForm
 
 
 def index(request):
@@ -141,20 +142,67 @@ class ItemListView(ListView):
     template_name = 'auctions/index.html'
 
 
-@require_POST
-def list_comment(request, list_id):
-    item_list = get_object_or_404(request, id=list_id)
-    comment = None
-    form = CommentForm(data=request.POST)
-    if form.is_valid():
-        comment = form.save(commit=False)
-        comment.item = item_list
-        comment.save()
+# @require_POST
+# def list_comment(request, list_id):
+#     item_list = get_object_or_404(request, id=list_id)
+#     comment = None
+#     form = CommentForm(data=request.POST)
+#     if form.is_valid():
+#         comment = form.save(commit=False)
+#         comment.item = item_list
+#         comment.save()
+#
+#         context = {
+#             'item_list': item_list,
+#             'form': form,
+#             'comment': comment,
+#         }
+#         return render(request, 'auctions/comment.html', context)
+#
 
-        context = {
-            'item_list': item_list,
-            'form': form,
-            'comment': comment,
-        }
-        return render(request, 'auctions/comment.html', context)
+@login_required
+def bid_place(request, list_id):
+    if request.method == 'POST':
+        bid_in = request.POST.get('bid_in')
+        user = request.user
+        item = get_object_or_404(Listing, pk=list_id)
+        bid_in_dec = Decimal(bid_in)
+        if bid_in_dec >= item.price:
+            highest_bid = Bid.objects.filter(item_bid=item).order_by('-bid').first()
+            if highest_bid is None or bid_in_dec > highest_bid.bid:
+                Bid.objects.create(bidder=user, item_bid=item, bid=bid_in)
+                return redirect('list_detail', list_id=list_id)
 
+
+
+def list_detail(request, list_id):
+    item = get_object_or_404(Listing, pk=list_id)
+    comments = Comment.objects.filter(item=item)
+    bides = Bid.objects.filter(item_bid=list_id).order_by('-bid_date').all()
+    user = request.user
+    watch = Watchlist.objects.filter(user=user, item=item)
+    winner = False
+    if not item.isActive:
+        last_bid = bides.last()
+        winner = True
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comments = form.save(commit=False)
+            comments.item = item
+            comments.auther = user
+            comments.save()
+            return redirect('list_detail', list_id=item.pk)
+        else:
+            form = CommentForm()
+
+    contex = {
+        "item": item,
+        'comments': comments,
+        'comment': CommentForm(),
+        'bides': bides,
+        'watch': watch,
+        'winner': winner,
+    }
+    return render(request, 'auctions/detail.html', contex)

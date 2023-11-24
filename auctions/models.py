@@ -6,6 +6,7 @@ class User(AbstractUser):
     pass
 
 
+# Category List
 class Category(models.Model):
     title = models.CharField(max_length=48, unique=True)
 
@@ -25,8 +26,9 @@ class Listing(models.Model):
     isActive = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
-    bid = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    bidder = models.ForeignKey(
+    winner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='winner')
+    bid = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    highest_bidder = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='bidder'
     )
     category = models.ForeignKey(
@@ -45,3 +47,21 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Write by: {Comment.auther.username}"
+
+
+class Bid(models.Model):
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bidder')
+    item_bid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='item_bid')
+    bid = models.DecimalField(max_digits=12, decimal_places=2)
+    bid_date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Bidder: {self.bidder}, item: {self.item_bid}, bid: {self.bid}'
+
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"user: {self.user}, item: {self.item}"
