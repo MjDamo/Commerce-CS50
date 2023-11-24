@@ -140,18 +140,21 @@ def bid_place(request, list_id):
             return render(request, 'auctions/detail-alarm.html', context={
                 'massage': "Your bid most be greader or equal price!"
             })
+    else:
+        return render(request, 'auctions/detail-alarm.html', context={
+            'massage': "Wrong value...!"
+        })
 
 
 def list_detail(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
     comments = Comment.objects.filter(item=item)
-    bides = Bid.objects.filter(item_bid=list_id).order_by('-bid_date').all()
+    last_bid = Bid.objects.filter(item_bid=item).order_by('bid_date').last()
     user = request.user
-    watch = Watchlist.objects.filter(user=user, item=item)
-    winner = False
+    win = False
     if not item.isActive:
-        last_bid = bides.last()
-        winner = True
+        if last_bid and last_bid.bidder == user:
+            win = True
 
     if request.method == 'POST':
         form = CommentForm(request.POST)
@@ -161,15 +164,39 @@ def list_detail(request, list_id):
             comments.auther = user
             comments.save()
             return redirect('list_detail', list_id=item.pk)
-        else:
-            form = CommentForm()
+    else:
+        comment = CommentForm()
 
     contex = {
         "item": item,
         'comments': comments,
-        'comment': CommentForm(),
-        'bides': bides,
-        'watch': watch,
-        'winner': winner,
+        'comment': comment,
+        'last_bid': last_bid,
+        'win': win,
     }
     return render(request, 'auctions/detail.html', contex)
+
+
+@login_required
+def add_watch(request, list_id):
+    item = get_object_or_404(Listing, pk=list_id)
+    Watchlist.objects.create(user=request.user, item=item)
+    return redirect('list_detail', list_id=item.pk)
+
+
+@login_required
+def rm_watch(request, list_id):
+    item = get_object_or_404(Listing, pk=list_id)
+    Watchlist.delete(item.pk)
+    return redirect('list_detail', list_id=item.pk)
+
+
+@login_required
+def watch_list(request):
+    items = Watchlist.objects.filter('item').all()
+    return render(request, 'auctions/watch-list.html',
+                  context={
+                      'items': items,
+                  })
+
+

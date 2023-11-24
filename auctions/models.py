@@ -46,7 +46,7 @@ class Comment(models.Model):
     publish = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Write by: {Comment.auther.username}"
+        return f"Write by: {Comment.auther.username} {self.text}"
 
 
 class Bid(models.Model):
@@ -61,7 +61,7 @@ class Bid(models.Model):
 
 class Watchlist(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    item = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name='watch_item')
 
     def __str__(self):
-        return f"user: {self.user}, item: {self.item}"
+        return f"item: {self.item}"
