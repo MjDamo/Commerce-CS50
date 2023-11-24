@@ -16,10 +16,10 @@ class Category(models.Model):
 
 class Listing(models.Model):
     auther = models.ForeignKey(
-        User, on_delete=models.CASCADE, blank=True, null=True, related_name="user"
+        User, on_delete=models.CASCADE, blank=True, null=True, related_name="listing"
     )
-    title = models.CharField(max_length=100)
-    description = models.TextField()
+    title = models.CharField(max_length=64)
+    description = models.TextField(max_length=300)
     image = models.ImageField(upload_to="gallery", blank=True, null=True)
     imageUrl = models.URLField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)

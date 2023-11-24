@@ -12,8 +12,6 @@ class ListingForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Add Title'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Write Description'}),
-            # 'image': forms.ImageField(attrs={'class': 'form-control'}),
-            # 'imageUrl': forms.URLField(attrs={'class': 'form-control', 'placeholder': 'Type Image Url'}),
             'price': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'placeholder': '0.00 $'}),
             'category': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Chose one'}),
         }
@@ -47,11 +45,11 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         fields = ['bid']
-        widgets = {
-            'bid': forms.NumberInput(attrs={
-                'class': 'form-control', 'placeholder': 'Add your bid $'
-            })
-        }
-        labels = {
-            'bid': 'BID:'
-        }
+        # widgets = {
+        #     'bid': forms.NumberInput(attrs={
+        #         'class': 'form-control', 'placeholder': 'Add your bid $'
+        #     })
+        # }
+        # labels = {
+        #     'bid': 'BID:'
+        # }

@@ -71,30 +71,6 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-# def listing(request):
-#     if request.method == "POST":
-#         title = request.POST['title']
-#         description = request.POST['description']
-#         auther = request.user
-#         # category = Category.objects.create(request.POST['category'])
-#         price = request.POST['price']
-#         image_url = request.POST['image']
-#
-#         new_list = Listing(
-#             title=title, description=description,
-#             auther=auther,
-#             price=price, imageUrl=image_url,
-#             isActive=True
-#         )
-#         new_list.save()
-#         return redirect('index')
-#     else:
-#         return render(request, "auctions/listing.html", {
-#             "message": "Fuck",
-#         })
-#
-#     return render(request, 'auctions/listing.html')
-
 @login_required
 def listing(request):
     if request.method == 'POST':
@@ -104,7 +80,7 @@ def listing(request):
             new_list.auther = request.user
             new_list.save()
             form.save_m2m()
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("listing"))
     else:
         return render(request, 'auctions/listing.html', {
             'form': ListingForm(),
@@ -142,24 +118,6 @@ class ItemListView(ListView):
     template_name = 'auctions/index.html'
 
 
-# @require_POST
-# def list_comment(request, list_id):
-#     item_list = get_object_or_404(request, id=list_id)
-#     comment = None
-#     form = CommentForm(data=request.POST)
-#     if form.is_valid():
-#         comment = form.save(commit=False)
-#         comment.item = item_list
-#         comment.save()
-#
-#         context = {
-#             'item_list': item_list,
-#             'form': form,
-#             'comment': comment,
-#         }
-#         return render(request, 'auctions/comment.html', context)
-#
-
 @login_required
 def bid_place(request, list_id):
     if request.method == 'POST':
@@ -167,12 +125,21 @@ def bid_place(request, list_id):
         user = request.user
         item = get_object_or_404(Listing, pk=list_id)
         bid_in_dec = Decimal(bid_in)
+
         if bid_in_dec >= item.price:
             highest_bid = Bid.objects.filter(item_bid=item).order_by('-bid').first()
+
             if highest_bid is None or bid_in_dec > highest_bid.bid:
                 Bid.objects.create(bidder=user, item_bid=item, bid=bid_in)
                 return redirect('list_detail', list_id=list_id)
-
+            else:
+                return render(request, 'auctions/detail-alarm.html', context={
+                    'massage': "Your bid most be greader than latest bid!"
+                })
+        else:
+            return render(request, 'auctions/detail-alarm.html', context={
+                'massage': "Your bid most be greader or equal price!"
+            })
 
 
 def list_detail(request, list_id):
