@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Listing, User
+from .models import Category, Listing, Watchlist
 
 
 # Register your models here.
@@ -13,7 +13,6 @@ class ListingAdmin(admin.ModelAdmin):
     list_display = ['title', 'auther', 'price', 'category', 'date', 'isActive']
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ['user', 'watchlist']
-
+@admin.register(Watchlist)
+class WatchlistAdmin(admin.ModelAdmin):
+    list_display = ['user', 'item']

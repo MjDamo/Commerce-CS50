@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
 from decimal import Decimal
 
-from .models import User, Category, Listing, Comment, Bid
+from .models import User, Category, Listing, Comment, Bid, Watchlist
 from .forms import ListingForm, AddCategory, CommentForm, BidForm
 
 
@@ -148,6 +148,7 @@ def bid_place(request, list_id):
 def list_detail(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
     comments = Comment.objects.filter(item=item)
+    watch = Watchlist.objects.filter(user=request.user, item=item)
     try:
         last_bid = Bid.objects.filter(item_bid=item).order_by('-bid_date').first()
     except:
@@ -177,9 +178,7 @@ def list_detail(request, list_id):
         'comment': comment,
         'last_bid': last_bid,
         'win': win,
-        'add': add_watch,
-        'rm': rm_watch,
-        'watchList': watch_list,
+        'watch': watch
     }
     return render(request, 'auctions/detail.html', contex)
 
@@ -225,23 +224,24 @@ def bid_end(request, list_id):
 
 @login_required
 def add_watch(request, list_id):
-    item = get_object_or_404(Listing, pk=list_id)
-    # Watchlist.objects.create(user=request.user, item=item)
-    request.user.watchlist.add(item)
-    return redirect('list_detail', list_id=item.pk)
+    if request.method == 'POST':
+        item = Listing.objects.get(pk=list_id)
+        add_item = Watchlist(user=request.user, item=item)
+        add_item.save()
+    return HttpResponseRedirect(reverse('list_detail', args=[list_id]))
 
 
 @login_required
 def rm_watch(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
-    request.user.watchlist.remove()
-    return redirect('list_detail', list_id=item.pk)
+    Watchlist.objects.filter(item=item).delete()
+    return HttpResponseRedirect(reverse('list_detail', args=[list_id]))
 
 
 @login_required
 def watch_list(request):
-    items = request.user.watchlist.all()
+    items = Watchlist.objects.filter(user=request.user)
     return render(request, 'auctions/watch-list.html',
                   context={
-                      'items': items,
+                      'items': items
                   })

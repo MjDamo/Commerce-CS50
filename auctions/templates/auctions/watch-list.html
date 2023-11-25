@@ -2,14 +2,14 @@
 {% block title %}Watchlist{% endblock %}
 
 {% block body %}
-    {% for item in items %}
-        {% if item %}
-        <a href="{% url 'list_detail' list_id=item %}"></a>
-            <p>{{ item.title }}</p>
-        {% else %}
-            <p>NOTING here</p>
-        {% endif %}
-        <p>{{ item }}</p>
-    {% endfor %}
+{#    {% for item in items %}#}
+{#        {% if item %}#}
+{#        <a href="{% url 'list_detail' list_id=item %}"></a>#}
+{#            <p>{{ item.title }}</p>#}
+{#        {% else %}#}
+{#            <p>NOTING here</p>#}
+{#        {% endif %}#}
+{#        <p>{{ item }}</p>#}
+{#    {% endfor %}#}
 
 {% endblock %}

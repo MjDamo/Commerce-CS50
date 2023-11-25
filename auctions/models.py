@@ -34,10 +34,10 @@ class Listing(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, related_name="category", null=True
     )
-    WatchList = models.ManyToManyField(User, blank=True, related_name='watchlist_users')
+    WatchList = models.ManyToManyField(User, null=True, blank=True, related_name='user_watch')
 
     def __str__(self):
-        return f"{self.title}, {self.auther}, {self.category}, {self.watchList}"
+        return f"{self.title}, {self.auther}, {self.category}, {self.WatchList}"
 
 
 class Comment(models.Model):
@@ -59,9 +59,10 @@ class Bid(models.Model):
     def __str__(self):
         return f'Bidder: {self.user}, item: {self.item_bid}, bid: {self.bid}'
 
-# class Watchlist(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watch_user')
-#     item = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name='watch_item')
-#
-#     def __str__(self):
-#         return f"item: {self.item}, {self.user}"
+
+class Watchlist(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watch_user')
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True, blank=True, related_name='watch_item')
+
+    def __str__(self):
+        return f"{self.user} added {self.item}"

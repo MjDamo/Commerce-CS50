@@ -16,31 +16,18 @@
     <pre>{{ item.description }}</pre>
     <p>category:</p>
     {{ item.category }}
-{#    {% if item.pk not in watchList %}#}
-{#        <form action="{% url 'add_watch' list_id=item.pk %}" method="post">#}
-{#        {% csrf_token %}#}
-{#        <button type="submit">ADD</button>#}
-{#        </form>#}
-{#    {% else %}#}
-{#        <form action="{% url 'rm_watch' list_id=item.pk %}" method="post">#}
-{#        {% csrf_token %}#}
-{#            <button type="submit">REMOVE</button>#}
-{#        </form>#}
-{#    {% endif %}#}
-    {% if item.auther.watchlist != item %}
-        <form action="{% url 'add_watch' list_id=item.pk %}" method="post">
+
+
+    {% if watch %}
+        <form action="{% url 'rm_watch' item.pk %}" method="post">
         {% csrf_token %}
-            <button type="submit">ADD</button>
+            <input type="submit" value="REMOVE">
         </form>
     {% else %}
-        <form action="{% url 'rm_watch' list_id=item.pk %}" method="post">
+        <form action="{% url 'add_watch' item.pk %}" method="post">
         {% csrf_token %}
-            <button type="submit">REMOVE</button>
+            <input type="submit" value="ADD...">
         </form>
     {% endif %}
-
-
-
-
 
 {% endblock %}
