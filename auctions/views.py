@@ -177,11 +177,29 @@ def list_detail(request, list_id):
     return render(request, 'auctions/detail.html', contex)
 
 
+@login_required
+def comment_del(request, com_id):
+    comment = get_object_or_404(Comment, pk=com_id)
+    if comment.auther == request.user:
+        comment.delete()
+    return redirect('list_detail', list_id=comment.item.pk)
+
+
 def category(request):
     categories = Category.objects.all()
     return render(request, 'auctions/categories.html',
                   context={
                       'categories': categories,
+                  })
+
+
+def category_select(request, cat_id):
+    cat = get_object_or_404(Category, pk=cat_id)
+    items = cat.category.filter(isActive=True)
+    return render(request, 'auctions/category-item.html',
+                  context={
+                      'category': cat,
+                      'items': items,
                   })
 
 
