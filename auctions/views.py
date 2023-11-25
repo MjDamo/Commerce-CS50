@@ -5,10 +5,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from django.views.decorators.http import require_POST
 from decimal import Decimal
 
-from .models import User, Category, Listing, Comment, Bid, Watchlist
+from .models import User, Category, Listing, Comment, Bid
 from .forms import ListingForm, AddCategory, CommentForm, BidForm
 
 
@@ -149,11 +148,14 @@ def bid_place(request, list_id):
 def list_detail(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
     comments = Comment.objects.filter(item=item)
-    last_bid = Bid.objects.filter(item_bid=item).order_by('bid_date').last()
+    try:
+        last_bid = Bid.objects.filter(item_bid=item).order_by('-bid_date').first()
+    except:
+        last_bid = 0
     user = request.user
     win = False
-    if not item.isActive:
-        if last_bid and last_bid.bidder == user:
+    if last_bid and not item.isActive:
+        if last_bid.user == user:
             win = True
 
     if request.method == 'POST':
@@ -164,6 +166,8 @@ def list_detail(request, list_id):
             comments.auther = user
             comments.save()
             return redirect('list_detail', list_id=item.pk)
+        else:
+            comment = CommentForm()
     else:
         comment = CommentForm()
 
@@ -173,6 +177,9 @@ def list_detail(request, list_id):
         'comment': comment,
         'last_bid': last_bid,
         'win': win,
+        'add': add_watch,
+        'rm': rm_watch,
+        'watchList': watch_list,
     }
     return render(request, 'auctions/detail.html', contex)
 
@@ -219,23 +226,22 @@ def bid_end(request, list_id):
 @login_required
 def add_watch(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
-    Watchlist.objects.create(user=request.user, item=item)
+    # Watchlist.objects.create(user=request.user, item=item)
+    request.user.watchlist.add(item)
     return redirect('list_detail', list_id=item.pk)
 
 
 @login_required
 def rm_watch(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
-    Watchlist.delete(item.pk)
+    request.user.watchlist.remove()
     return redirect('list_detail', list_id=item.pk)
 
 
 @login_required
 def watch_list(request):
-    items = Watchlist.objects.filter('item').all()
+    items = request.user.watchlist.all()
     return render(request, 'auctions/watch-list.html',
                   context={
                       'items': items,
                   })
-
-

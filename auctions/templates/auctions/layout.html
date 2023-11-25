@@ -36,7 +36,7 @@
             {% if user.is_authenticated %}
                 <a class="nav-link" href="{% url 'logout' %}">Category</a>
                 <a class="nav-link" href="{% url 'listing' %}">Create Listing</a>
-                <a class="nav-link" href="{% url 'logout' %}">Watchlist</a>
+                <a class="nav-link" href="{% url 'watch_list' %}">Watchlist</a>
                 <a class="nav-link" href="{% url 'listing' %}">My Actions</a>
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             {% else %}

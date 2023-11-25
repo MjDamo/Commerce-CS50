@@ -22,21 +22,22 @@ class Listing(models.Model):
     description = models.TextField(max_length=300)
     image = models.ImageField(upload_to="gallery", blank=True, null=True)
     imageUrl = models.URLField(null=True, blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.DecimalField(max_digits=12, decimal_places=2)
     isActive = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
     update = models.DateTimeField(auto_now=True)
     winner = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True, related_name='winner')
-    bid = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True)
+    bid = models.DecimalField(max_digits=12, decimal_places=2, blank=True, null=True, default=0)
     highest_bidder = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True, blank=True, related_name='bidder'
     )
     category = models.ForeignKey(
         Category, on_delete=models.SET_NULL, related_name="category", null=True
     )
+    WatchList = models.ManyToManyField(User, blank=True, related_name='watchlist_users')
 
     def __str__(self):
-        return f"{self.title}, {self.auther}, {self.category}"
+        return f"{self.title}, {self.auther}, {self.category}, {self.watchList}"
 
 
 class Comment(models.Model):
@@ -50,18 +51,17 @@ class Comment(models.Model):
 
 
 class Bid(models.Model):
-    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bidder')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     item_bid = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='item_bid')
-    bid = models.DecimalField(max_digits=12, decimal_places=2)
+    bid = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     bid_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Bidder: {self.bidder}, item: {self.item_bid}, bid: {self.bid}'
+        return f'Bidder: {self.user}, item: {self.item_bid}, bid: {self.bid}'
 
-
-class Watchlist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    item = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name='watch_item')
-
-    def __str__(self):
-        return f"item: {self.item}"
+# class Watchlist(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='watch_user')
+#     item = models.ForeignKey(Listing, on_delete=models.CASCADE, blank=True, related_name='watch_item')
+#
+#     def __str__(self):
+#         return f"item: {self.item}, {self.user}"
