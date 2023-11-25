@@ -177,6 +177,27 @@ def list_detail(request, list_id):
     return render(request, 'auctions/detail.html', contex)
 
 
+def category(request):
+    categories = Category.objects.all()
+    return render(request, 'auctions/categories.html',
+                  context={
+                      'categories': categories,
+                  })
+
+
+@login_required
+def bid_end(request, list_id):
+    item = get_object_or_404(Listing, pk=list_id)
+    if item.auther == request.user:
+        item.isActive = False
+        item.save()
+        bid = item.bid
+        if 0 < bid:
+            item.highest_bidder = request.user
+            item.save()
+    return redirect('list_detail', list_id=item.pk)
+
+
 @login_required
 def add_watch(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
