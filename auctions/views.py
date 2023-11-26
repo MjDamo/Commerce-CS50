@@ -147,7 +147,7 @@ def bid_place(request, list_id):
 
 def list_detail(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
-    comments = Comment.objects.filter(item=item)
+    comments = item.item_comment.all()
     watch = Watchlist.objects.filter(user=request.user, item=item)
     try:
         last_bid = Bid.objects.filter(item_bid=item).order_by('-bid_date').first()
@@ -160,24 +160,25 @@ def list_detail(request, list_id):
             win = True
 
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comments = form.save(commit=False)
-            comments.item = item
-            comments.auther = user
-            comments.save()
+        com_form = CommentForm(request.POST)
+        if com_form.is_valid():
+            com = com_form.save(commit=False)
+            com.item = item
+            com.auther = user
+            com.save()
             return redirect('list_detail', list_id=item.pk)
         else:
-            comment = CommentForm()
+            comment_form = CommentForm()
     else:
-        comment = CommentForm()
+        comment_form = CommentForm()
 
     contex = {
         "item": item,
+        'user': request.user,
         'comments': comments,
-        'comment': comment,
+        'comment': comment_form,
+        'com_form': CommentForm(),
         'last_bid': last_bid,
-        # 'bid_form': BidForm(),
         'win': win,
         'watch': watch
     }
@@ -189,6 +190,7 @@ def comment_del(request, com_id):
     comment = get_object_or_404(Comment, pk=com_id)
     if comment.auther == request.user:
         comment.delete()
+    # return HttpResponseRedirect(reverse('list_detail', args=[comment.item.pk]))
     return redirect('list_detail', list_id=comment.item.pk)
 
 

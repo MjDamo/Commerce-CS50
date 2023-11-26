@@ -36,9 +36,6 @@ class CommentForm(forms.ModelForm):
         widgets = {
             'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Write your comment..."})
         }
-        labels = {
-            'comment': "Comment"
-        }
 
 
 class BidForm(forms.ModelForm):

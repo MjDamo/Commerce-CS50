@@ -29,6 +29,8 @@
 {#            <input type="submit" value="ADD...">#}
 {#        </form>#}
 {#    {% endif %}#}
+    <p><strong>Start Price: </strong>{{ item.price }}</p>
+    <p><strong>Highest Bid: </strong>{{ last_bid.bid }}</p>
     <form action="{% url 'bid_place' item.pk %}" method="post">
     {% csrf_token %}
         {% if massage %}
@@ -37,6 +39,26 @@
         <input type="number" name="bid_in" id="bid_in" required>
         <button type="submit">bid</button>
     </form>
-    <p>{{ last_bid.bid }}</p>
+    <h3>Comments:</h3>
+    {% if comments %}
+    	{% for comment in comments %}
+    		{{ comment.text }}
+            {% if  comment.auther == user %}
+                <form action="{% url 'comment_del' comment.pk %}" method="post">
+                {% csrf_token %}
+                    <button type="submit">Del</button>
+                </form>
+            {% endif %}
+    	{% endfor %}
+    {% else %}
+        <p>Noting here...</p>
+    {% endif %}
+    <form action="{% url 'list_detail' item.pk %}" method="post">
+    {% csrf_token %}
+    {{ com_form.as_p }}
+        <button type="submit">add comment</button>
+    </form>
+
+
 
 {% endblock %}

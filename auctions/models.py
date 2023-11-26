@@ -35,19 +35,20 @@ class Listing(models.Model):
         Category, on_delete=models.SET_NULL, related_name="category", null=True
     )
     WatchList = models.ManyToManyField(User, null=True, blank=True, related_name='user_watch')
+    comments = models.ManyToManyField('Comment', blank=True, related_name='item_comment')
 
     def __str__(self):
         return f"{self.title}, {self.auther}, {self.category}, {self.WatchList}"
 
 
 class Comment(models.Model):
-    auther = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True)
-    item = models.ForeignKey(Listing, on_delete=models.CASCADE, null=True, blank=True, related_name='item_comment')
+    auther = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, related_name='user_comment')
+    item = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name='item_comment')
     text = models.TextField(max_length=1000)
     publish = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Write by: {Comment.auther.username} {self.text}"
+        return f"Write by: {Comment.auther.username} {self.text}{self.item.title}"
 
 
 class Bid(models.Model):
