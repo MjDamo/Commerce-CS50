@@ -57,7 +57,7 @@ class Bid(models.Model):
     bid_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Bidder: {self.user}, item: {self.item_bid}, bid: {self.bid}'
+        return f'Bidder: {self.user}, item: {self.item_bid}, bid: {self.bid}, date: {self.bid_date}'
 
 
 class Watchlist(models.Model):

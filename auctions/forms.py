@@ -45,11 +45,8 @@ class BidForm(forms.ModelForm):
     class Meta:
         model = Bid
         fields = ['bid']
-        # widgets = {
-        #     'bid': forms.NumberInput(attrs={
-        #         'class': 'form-control', 'placeholder': 'Add your bid $'
-        #     })
-        # }
-        # labels = {
-        #     'bid': 'BID:'
-        # }
+        widgets = {
+            'bid': forms.NumberInput(attrs={
+                'class': 'form-control', 'placeholder': 'Place your bid: '
+            })
+        }

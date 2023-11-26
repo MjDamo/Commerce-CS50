@@ -129,7 +129,7 @@ def bid_place(request, list_id):
             highest_bid = Bid.objects.filter(item_bid=item).order_by('-bid').first()
 
             if highest_bid is None or bid_in_dec > highest_bid.bid:
-                Bid.objects.create(bidder=user, item_bid=item, bid=bid_in)
+                Bid.objects.create(user=user, item_bid=item, bid=bid_in)
                 return redirect('list_detail', list_id=list_id)
             else:
                 return render(request, 'auctions/detail-alarm.html', context={
@@ -177,6 +177,7 @@ def list_detail(request, list_id):
         'comments': comments,
         'comment': comment,
         'last_bid': last_bid,
+        # 'bid_form': BidForm(),
         'win': win,
         'watch': watch
     }

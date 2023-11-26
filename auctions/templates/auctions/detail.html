@@ -1,5 +1,5 @@
 {% extends "auctions/layout.html" %}
-{% block title %}Home{% endblock %}
+{% block title %}{{ item.title }}{% endblock %}
 
 {% block body %}
     <h1>{{ item.title }}</h1>
@@ -18,16 +18,25 @@
     {{ item.category }}
 
 
-    {% if watch %}
-        <form action="{% url 'rm_watch' item.pk %}" method="post">
-        {% csrf_token %}
-            <input type="submit" value="REMOVE">
-        </form>
-    {% else %}
-        <form action="{% url 'add_watch' item.pk %}" method="post">
-        {% csrf_token %}
-            <input type="submit" value="ADD...">
-        </form>
-    {% endif %}
+{#    {% if watch %}#}
+{#        <form action="{% url 'rm_watch' item.pk %}" method="post">#}
+{#        {% csrf_token %}#}
+{#            <input type="submit" value="REMOVE">#}
+{#        </form>#}
+{#    {% else %}#}
+{#        <form action="{% url 'add_watch' item.pk %}" method="post">#}
+{#        {% csrf_token %}#}
+{#            <input type="submit" value="ADD...">#}
+{#        </form>#}
+{#    {% endif %}#}
+    <form action="{% url 'bid_place' item.pk %}" method="post">
+    {% csrf_token %}
+        {% if massage %}
+            <p>{{ massage }}</p>
+        {% endif %}
+        <input type="number" name="bid_in" id="bid_in" required>
+        <button type="submit">bid</button>
+    </form>
+    <p>{{ last_bid.bid }}</p>
 
 {% endblock %}
