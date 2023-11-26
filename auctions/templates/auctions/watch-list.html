@@ -2,14 +2,22 @@
 {% block title %}Watchlist{% endblock %}
 
 {% block body %}
-{#    {% for item in items %}#}
-{#        {% if item %}#}
-{#        <a href="{% url 'list_detail' list_id=item %}"></a>#}
-{#            <p>{{ item.title }}</p>#}
-{#        {% else %}#}
-{#            <p>NOTING here</p>#}
-{#        {% endif %}#}
-{#        <p>{{ item }}</p>#}
-{#    {% endfor %}#}
-
+    {% if items %}
+        {% for item in items %}
+                <div>
+                    <p>{{ item.item.title }}</p>
+                    {% if item.item.imageUrl %}
+                        <img style="max-width: 200px" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}">
+                    {% else %}
+                        <img style="max-width: 200px" src="{{ item.item.image }}" alt="{{ item.item.title }}">
+                    {% endif %}
+                </div>
+                <form action="{% url 'rm_watch' item.item.pk %}" method="post">
+                {% csrf_token %}
+                    <input type="submit" value="REMOVE">
+                </form>
+        {% endfor %}
+    {% else %}
+        <p>NOTING</p>
+    {% endif %}
 {% endblock %}

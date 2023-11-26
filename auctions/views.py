@@ -243,5 +243,5 @@ def watch_list(request):
     items = Watchlist.objects.filter(user=request.user)
     return render(request, 'auctions/watch-list.html',
                   context={
-                      'items': items
+                      'items': items,
                   })
