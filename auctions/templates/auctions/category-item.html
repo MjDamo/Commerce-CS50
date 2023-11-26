@@ -1,10 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "auctions/layout.html" %}
+{% block title %}{{ category }}{% endblock %}
 
-</body>
-</html>
+{% block body %}
+    {% if items %}
+        {% for item in items %}
+            <div>
+                <a href="{% url 'list_detail' item.pk %}"><h1>{{ item.title }}</h1></a>
+                {% if item.imageUrl %}
+                    <img style="max-width: 200px" src="{{ item.imageUrl }}" alt="{{ item.title }}">
+                {% else %}
+                    <img style="max-width: 200px" src="{{ item.image.url }}" alt="{{ item.title }}">
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -5,11 +5,11 @@
     {% if items %}
         {% for item in items %}
                 <div>
-                    <p>{{ item.item.title }}</p>
+                    <a href="{% url 'list_detail' item.item.pk %}"><h2>{{ item.item.title }}</h2></a>
                     {% if item.item.imageUrl %}
                         <img style="max-width: 200px" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}">
                     {% else %}
-                        <img style="max-width: 200px" src="{{ item.item.image }}" alt="{{ item.item.title }}">
+                        <img style="max-width: 200px" src="{{ item.item.image.url }}" alt="{{ item.item.title }}">
                     {% endif %}
                 </div>
                 <form action="{% url 'rm_watch' item.item.pk %}" method="post">
