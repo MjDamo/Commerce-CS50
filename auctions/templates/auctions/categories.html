@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "auctions/layout.html" %}
+{% block title %}Categories{% endblock %}
 
-</body>
-</html>
+{% block body %}
+    {% if categories %}
+        {% for item in categories %}
+                <div>
+                    <a href="{% url 'category_item' item.pk %}"><h2>{{ item.title }}</h2></a>
+                    <p>Check items in <strong>{{ item.title }}</strong> category</p>
+                </div>
+        {% endfor %}
+    {% else %}
+        <p>NOTING</p>
+    {% endif %}
+{% endblock %}

@@ -34,7 +34,7 @@
             </div>
             <a class="nav-link" href="{% url 'index' %}">Active Listings</a>
             {% if user.is_authenticated %}
-                <a class="nav-link" href="{% url 'logout' %}">Category</a>
+                <a class="nav-link" href="{% url 'category' %}">Category</a>
                 <a class="nav-link" href="{% url 'listing' %}">Create Listing</a>
                 <a class="nav-link" href="{% url 'watch_list' %}">Watchlist</a>
                 <a class="nav-link" href="{% url 'listing' %}">My Actions</a>

@@ -13,5 +13,7 @@ urlpatterns = [
     path('listing/<int:list_id>/rm', views.rm_watch, name='rm_watch'),
     # path('listing/<int:list_id>/', views.watch_list, name='watch_list'),
     path('watch-list', views.watch_list, name='watch_list'),
+    path('categories', views.category, name='category'),
+    path('category-item/<int:cat_id>', views.category_select, name='category_item'),
     path("add_category", views.add_category, name="add_category"),
 ]
