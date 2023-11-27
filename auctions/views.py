@@ -113,7 +113,7 @@ def add_category(request):
 class ItemListView(ListView):
     queryset = Listing.objects.filter(isActive=True)
     context_object_name = 'list'
-    paginate_by = 2
+    paginate_by = 4
     template_name = 'auctions/index.html'
 
 
