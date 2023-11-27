@@ -215,12 +215,18 @@ def category_select(request, cat_id):
 @login_required
 def bid_end(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
+    high_bid = Bid.objects.filter(item_bid=item).order_by('-bid').first()
     if item.auther == request.user:
         item.isActive = False
+        if high_bid:
+            item.winner = high_bid.user
+            item.highest_bidder = high_bid.user
+            item.save()
         item.save()
-        bid = item.bid
-        if 0 < bid:
+        # bid = item.bid
+        if Decimal(high_bid.bid) < Decimal(item.price):
             item.highest_bidder = request.user
+            item.winner = request.user
             item.save()
     return redirect('list_detail', list_id=item.pk)
 
@@ -248,3 +254,22 @@ def watch_list(request):
                   context={
                       'items': items,
                   })
+
+
+# class MyAccView(ListView):
+#     queryset = Listing.objects.all()
+#     context_object_name = 'items'
+#     paginate_by = 2
+#     template_name = 'auctions/myacc.html'
+
+
+@login_required
+def my_acc(request):
+    items = Listing.objects.filter(auther=request.user).all()
+    all_win = Listing.objects.filter(winner=request.user).all()
+    return render(request, 'auctions/myacc.html',
+                  context={
+                      'items': items,
+                      'all_win': all_win,
+                  })
+
