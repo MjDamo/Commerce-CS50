@@ -22,7 +22,7 @@ class AddCategory(forms.ModelForm):
         model = Category
         fields = ['title']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'If not in list, add yours:'})
+            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Add new category'})
         }
 
 
