@@ -2,112 +2,79 @@
 
 {% block body %}
 
-{#    <div class="bodyBox">#}
-{#    <div class="loginBox">#}
-{#        <h1 class="lineBlock">Register</h1>#}
-{#        {% if message %}#}
-{#            <div class="lineBlock">{{ message }}</div>#}
-{#        {% endif %}#}
-{##}
-{#        <form class="lineBlock" action="{% url 'register' %}" method="post">#}
-{#        {% csrf_token %}#}
-{#            <div>#}
-{#                <input class="lineBlock bo" autofocus type="text" name="username" placeholder="Username">#}
-{#            </div>#}
-{#            <div>#}
-{#                <input class="lineBlock bo" type="email" name="email" placeholder="Email Address">#}
-{#            </div>#}
-{#            <div>#}
-{#                <input class="lineBlock bo" type="password" name="password" placeholder="Password">#}
-{#            </div>#}
-{#            <div>#}
-{#                <input class="lineBlock bo" type="password" name="confirmation" placeholder="Confirm Password">#}
-{#            </div>#}
-{#            <input class="lineBlockBTN" type="submit" value="Register">#}
-{#        </form>#}
-{#        <div class="massageBlock">#}
-{#                Already have an account? <a style="text-decoration: none; color: red" href="{% url 'login' %}"><strong>LOGIN here</strong></a>#}
-{#        </div>#}
-{#    </div>#}
-{#    </div>#}
+    <section class="">
+        <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+            <div class="container">
+                <div class="row gx-lg-5 align-items-center">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <h1 class="my-5 display-3 fw-bold ls-tight">
+                            Auctions <br/>
+                            <span class="text-primary">for CS50 project</span>
+                        </h1>
+                        <p style="color: hsl(217, 10%, 50.8%)">
+                            CS50’s Web Programming with Python and JavaScript
+                        </p>
 
+                        <!-- Alarm -->
+                        {% if message %}
+                        <div class="container mt-5">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
+                                    <div class="alert alert_info"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">&times;</button> <strong>{{ message }}</strong> </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    </div>
 
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="card">
+                            <div class="card-body py-5 px-md-5">
+                                <form action="{% url 'register' %}" method="post">
+                                {% csrf_token %}
+                                <!-- User name -->
+                                    <div class="form-outline mb-4">
+                                        <input type="text" name="username" placeholder="chose an username..." id="form3Example3" class="form-control" autofocus required/>
+                                        <label class="form-label" for="form3Example3">User name</label>
+                                    </div>
 
+                                <!-- Email input -->
+                                    <div class="form-outline mb-4">
+                                        <input type="email" name="email" placeholder="Enter your valid email Address..." id="form3Example3" class="form-control" required/>
+                                        <label class="form-label" for="form3Example3">Email address</label>
+                                    </div>
 
-      <section class="">
-  <!-- Jumbotron -->
-  <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
-    <div class="container">
-      <div class="row gx-lg-5 align-items-center">
-        <div class="col-lg-6 mb-5 mb-lg-0">
-          <h1 class="my-5 display-3 fw-bold ls-tight">
-            Auctions <br />
-            <span class="text-primary">for CS50 project</span>
-          </h1>
-          <p style="color: hsl(217, 10%, 50.8%)">
-            CS50’s Web Programming with Python and JavaScript
-          </p>
+                                <!-- Password input -->
+                                    <div class="form-outline mb-4">
+                                        <input type="password" name="password" placeholder="Chose a strong Password..." id="form3Example4" class="form-control" required/>
+                                        <label class="form-label" for="form3Example4">Password</label>
+                                    </div>
 
-          <!-- Alarm -->
-          {% if message %}
-          <div class="container mt-5">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-xs-12 col-sm-6">
-                <div class="alert alert_info"> <button aria-hidden="true" data-dismiss="alert" class="close" type="button">&times;</button> <strong>{{ message }}</strong> </div>
+                                <!-- Confirm password input -->
+                                    <div class="form-outline mb-4">
+                                        <input type="password" name="confirmation" placeholder="Type your password again for confirm..." id="form3Example4" class="form-control" required />
+                                        <label class="form-label" for="form3Example4">Confirm password</label>
+                                    </div>
+
+                                <!-- Submit button -->
+                                    <button type="submit" class="btn btn-primary btn-block mb-4">
+                                    Sign up
+                                    </button>
+
+                                <!-- Register buttons -->
+                                    <div class="text-center">
+                                        <p>If you have an account:</p>
+                                        <button type="button" class="btn btn-link btn-floating mx-1">
+                                        <a href="{% url 'login' %}"><strong>Log In</strong></a>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            </div>
-          </div>
-          {% endif %}
         </div>
-
-        <div class="col-lg-6 mb-5 mb-lg-0">
-          <div class="card">
-            <div class="card-body py-5 px-md-5">
-              <form>
-                  <!-- User name -->
-                <div class="form-outline mb-4">
-                  <input type="text" id="form3Example3" class="form-control" autofocus required/>
-                  <label class="form-label" for="form3Example3">User name</label>
-                </div>
-
-                <!-- Email input -->
-                <div class="form-outline mb-4">
-                  <input type="email" id="form3Example3" class="form-control" required/>
-                  <label class="form-label" for="form3Example3">Email address</label>
-                </div>
-
-                <!-- Password input -->
-                <div class="form-outline mb-4">
-                  <input type="password" id="form3Example4" class="form-control" required/>
-                  <label class="form-label" for="form3Example4">Password</label>
-                </div>
-
-                <!-- Password input -->
-                <div class="form-outline mb-4">
-                  <input type="password" id="form3Example4" class="form-control" required />
-                  <label class="form-label" for="form3Example4">Confirm password</label>
-                </div>
-
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-primary btn-block mb-4">
-                  Sign up
-                </button>
-
-                <!-- Register buttons -->
-                <div class="text-center">
-                  <p>If you have an account:</p>
-                  <button type="button" class="btn btn-link btn-floating mx-1">
-                      <a href=""><strong>Log In</strong></a>
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Jumbotron -->
-</section>
+    </section>
 
 {% endblock %}
