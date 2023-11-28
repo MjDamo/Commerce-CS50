@@ -165,49 +165,11 @@
   background-color:#666;
 }
 
-/*Product card*/
 
-/* This css file is to over write bootstarp css
----------------------------------------------------------------------- */
-
-
-/*
-Theme Name: Modern - Bootstrap 4 Cards
-Theme URI: http://adamthemes.com/
-Author: AdamThemes
-Author URI: http://adamthemes.com/
-Description: Modern - Bootstrap 4 Cards by AdamThemes
-Version: 1.0
-License: GNU General Public License v2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Tags: card, cards, css3, modern, adamthemes, bootstrap, profile
-*---------------------------------------------------------------------- */
-
-
-/*----------------------------------------------------------------------
-TABLE OF CONTENTS
-
-// 1. SECTIONS
-// 2. CARDS
-//      2.1 Card Table
-//      2.1 Card Blog
-//      2.1 Card Background
-//      2.1 Card Profile
-//      2.1 Card Category
-//      2.1 Card Author
-//      2.1 Card Product
-//      2.1 Card Testimonial
-//      2.1 Text Color
-// 3. BUTTONS
-// 4. SOCIAL MEDIA BUTTONS
-// 5. BOOTSTRAP COL-MD-12 CLASS
-// 6. FONT AWESOME FA CLASS
-
-------------------------------------------------------------------------*/
 
 
 /*---------------------------------------------------------------------- /
-SECTIONS
+Product card
 ----------------------------------------------------------------------- */
 
 .section-cards {
@@ -693,6 +655,36 @@ button.close{
 }
 
 /*---------------------------------------------------------------------- /
-Category
+Listing
 ----------------------------------------------------------------------- */
+
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    margin-bottom: 40px;
+}
+
+label {
+    color: #333;
+}
+
+.btn-send {
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    width: 80%;
+    margin-left: 3px;
+    }
+.help-block.with-errors {
+    color: #ff5050;
+    margin-top: 5px;
+
+}
+
+.card-form{
+	margin-left: 10px;
+	margin-right: 10px;
+}
 
