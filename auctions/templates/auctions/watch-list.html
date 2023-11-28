@@ -2,22 +2,80 @@
 {% block title %}Watchlist{% endblock %}
 
 {% block body %}
+{#    {% if items %}#}
+{#        {% for item in items %}#}
+{#                <div>#}
+{#                    <a href="{% url 'list_detail' item.item.pk %}"><h2>{{ item.item.title }}</h2></a>#}
+{#                    {% if item.item.imageUrl %}#}
+{#                        <img style="max-width: 200px" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}">#}
+{#                    {% else %}#}
+{#                        <img style="max-width: 200px" src="{{ item.item.image.url }}" alt="{{ item.item.title }}">#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                <form action="{% url 'rm_watch' item.item.pk %}" method="post">#}
+{#                {% csrf_token %}#}
+{#                    <input type="submit" value="REMOVE">#}
+{#                </form>#}
+{#        {% endfor %}#}
+{#    {% else %}#}
+{#        <p>NOTING</p>#}
+{#    {% endif %}#}
+
+
+
     {% if items %}
-        {% for item in items %}
-                <div>
-                    <a href="{% url 'list_detail' item.item.pk %}"><h2>{{ item.item.title }}</h2></a>
-                    {% if item.item.imageUrl %}
-                        <img style="max-width: 200px" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}">
-                    {% else %}
-                        <img style="max-width: 200px" src="{{ item.item.image.url }}" alt="{{ item.item.title }}">
-                    {% endif %}
+        <div>
+            <div class="cards-8 section-gray">
+                <div class="container">
+                    <div class="row">
+                        {% for item in items %}
+                        <div class="col-md-3">
+                            <div class="card card-product">
+                                <div class="card-image">
+                                    {% if item.item.imageUrl %}
+                                    <a href="{% url 'list_detail' list_id=item.item.pk %}"> <img class="img" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}||{{ item.item.description }}"> </a>
+                                    {% else  %}
+                                    <a href="{% url 'list_detail' list_id=item.item.pk %}"> <img class="img" src="{{ item.item.image.url }}" alt="{{ item.item.title }}||{{ item.item.description }}"> </a>
+                                    {% endif %}
+                                </div>
+                                <div class="table">
+                                    <h6 class="category text-rose">{{ item.item.category }}</h6>
+                                    <h4 class="card-caption">
+    						        <a href="{% url 'list_detail' list_id=item.item.pk %}">{{ item.item.title }}</a>
+    					            </h4>
+                                    <div class="category">
+                                        <form action="{% url 'rm_watch' item.item.pk %}" method="post">
+                                            {% csrf_token %}
+                                            <button  type="submit" rel="tooltip" title="" class="btn btn-danger" data-original-title="Saved to Wishlist">Remove</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
-                <form action="{% url 'rm_watch' item.item.pk %}" method="post">
-                {% csrf_token %}
-                    <input type="submit" value="REMOVE">
-                </form>
-        {% endfor %}
+            </div>
+        </div>
     {% else %}
-        <p>NOTING</p>
+        <div>
+            <div class="cards-8 section-gray">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card card-product">
+                            <div class="table">
+                                <h4 class="card-caption">
+                                <a>Noting here!</a>
+            					</h4>
+                                <div class="card-description"> <p style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Noting added to your favorite.</p> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
     {% endif %}
+
 {% endblock %}
