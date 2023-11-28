@@ -2,16 +2,80 @@
 {% block title %}{{ category }}{% endblock %}
 
 {% block body %}
+{#    {% if items %}#}
+{#        {% for item in items %}#}
+{#            <div>#}
+{#                <a href="{% url 'list_detail' item.pk %}"><h1>{{ item.title }}</h1></a>#}
+{#                {% if item.imageUrl %}#}
+{#                    <img style="max-width: 200px" src="{{ item.imageUrl }}" alt="{{ item.title }}">#}
+{#                {% else %}#}
+{#                    <img style="max-width: 200px" src="{{ item.image.url }}" alt="{{ item.title }}">#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+
     {% if items %}
+    <div>
+    <div class="cards-8 section-gray">
+
+    <div class="container">
+        <div class="row">
         {% for item in items %}
-            <div>
-                <a href="{% url 'list_detail' item.pk %}"><h1>{{ item.title }}</h1></a>
-                {% if item.imageUrl %}
-                    <img style="max-width: 200px" src="{{ item.imageUrl }}" alt="{{ item.title }}">
-                {% else %}
-                    <img style="max-width: 200px" src="{{ item.image.url }}" alt="{{ item.title }}">
-                {% endif %}
+            <div class="col-md-3">
+                <div class="card card-product">
+                    <div class="card-image">
+                        {% if item.imageUrl %}
+                        <a href="{% url 'list_detail' list_id=item.pk %}"> <img class="img" src="{{ item.imageUrl }}" alt="{{ item.title }}||{{ item.description }}"> </a>
+                        {% else  %}
+                        <a href="{% url 'list_detail' list_id=item.pk %}"> <img class="img" src="{{ item.image.url }}" alt="{{ item.title }}||{{ item.description }}"> </a>
+                        {% endif %}
+                    </div>
+                    <div class="table">
+                        <h6 class="category text-rose">{{ item.category }}</h6>
+                        <h4 class="card-caption">
+    						<a href="{% url 'list_detail' list_id=item.pk %}">{{ item.title }}</a>
+    					</h4>
+                        <div class="card-description"> <p style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.description }}</p> </div>
+                        <div class="ftr">
+                            <div class="price">
+                                <h4>${{ item.price }}</h4> </div>
+                            <div class="stats">
+                                <button type="button" rel="tooltip" title="" class="btn btn-just-icon btn-simple btn-warning" data-original-title="Saved to Wishlist">
+                                    <a style="color: #ff9800; text-decoration: none;" class="fa fa-shopping-cart" href="{% url 'list_detail' list_id=item.pk %}"></a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         {% endfor %}
+        </div>
+    </div>
+
+    {% include 'auctions/pagination.html' with page=page_obj %}
+    </div>
+    </div>
+
+    {% else %}
+        <div>
+            <div class="cards-8 section-gray">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card card-product">
+                            <div class="table">
+                                <h4 class="card-caption">
+                                <a>Noting here!</a>
+            					</h4>
+                                <div class="card-description"> <p style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Add the first Item.</p> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
     {% endif %}
+
+
 {% endblock %}
