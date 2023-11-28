@@ -2,54 +2,50 @@
 {% block title %}Categories{% endblock %}
 
 {% block body %}
-{#    {% if categories %}#}
-{#        {% for item in categories %}#}
-{#                <div>#}
-{#                    <a href="{% url 'category_item' item.pk %}"><h2>{{ item.title }}</h2></a>#}
-{#                    <p>Check items in <strong>{{ item.title }}</strong> category</p>#}
-{#                </div>#}
-{#        {% endfor %}#}
-{#    {% endif %}#}
 
-    <div>
-    <div class="cards-8 section-gray">
-
-    <div class="container">
-        <div class="row">
-        {% for l in list %}
-            <div class="col-md-3">
-                <div class="card card-product">
-                    <div class="card-image">
-                        {% if l.imageUrl %}
-                        <a href="{% url 'list_detail' list_id=l.pk %}"> <img class="img" src="{{ l.imageUrl }}" alt="{{ l.title }}||{{ l.description }}"> </a>
-                        {% else  %}
-                        <a href="{% url 'list_detail' list_id=l.pk %}"> <img class="img" src="{{ l.image.url }}" alt="{{ l.title }}||{{ l.description }}"> </a>
-                        {% endif %}
+    {% if categories %}
+            <div>
+            <div class="cards-8 section-gray">
+            <div class="container">
+                <div class="row">
+                    {% for item in categories %}
+                    <div class="col-md-3">
+                        <div class="card card-product">
+                            <div class="table">
+                                <h6 class="category text-rose">{{ l.category }}</h6>
+                                <h4 class="card-caption">
+                                <a href="{% url 'category_item' item.pk %}">{{ item.title }}</a>
+            					</h4>
+                                <div class="card-description"> <p style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Check items in <strong>{{ item.title }}</strong> category</p> </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="table">
-                        <h6 class="category text-rose">{{ l.category }}</h6>
-                        <h4 class="card-caption">
-    						<a href="{% url 'list_detail' list_id=l.pk %}">{{ l.title }}</a>
-    					</h4>
-                        <div class="card-description"> <p style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ l.description }}</p> </div>
-                        <div class="ftr">
-                            <div class="price">
-                                <h4>${{ l.price }}</h4> </div>
-                            <div class="stats">
-                                <button type="button" rel="tooltip" title="" class="btn btn-just-icon btn-simple btn-warning" data-original-title="Saved to Wishlist">
-                                    <a style="color: #ff9800; text-decoration: none;" class="fa fa-shopping-cart" href="{% url 'list_detail' list_id=l.pk %}"></a></button>
+                    {% endfor %}
+                </div>
+            </div>
+            </div>
+            </div>
+    {% else %}
+        <div>
+            <div class="cards-8 section-gray">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card card-product">
+                            <div class="table">
+                                <h6 class="category text-rose">{{ l.category }}</h6>
+                                <h4 class="card-caption">
+                                <a>Noting here!</a>
+            					</h4>
+                                <div class="card-description"> <p style="width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Add the first category.</p> </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-        </div>
-    </div>
-
-    {% include 'auctions/pagination.html' with page=page_obj %}
-    </div>
-    </div>
+            </div>
+            </div>
+    {% endif %}
 
 
 {% endblock %}
