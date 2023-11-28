@@ -2,66 +2,132 @@
 {% block title %}{{ item.title }}{% endblock %}
 
 {% block body %}
-    <h1>{{ item.title }}</h1>
-    {% if item.imageUrl %}
-    	<div style="max-height: 250px; max-width: 250px;">
-            <img style="max-height: 250px" src="{{ item.imageUrl }}" alt="{{ item.title }} || {{ item.description }}">
+
+<section class="pt-5 pb-5">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col col-md-12 pr-md-5 pl-md-5">
+                <div class="bd-example bd-example-tabs">
+                    <div class="tab-content pt-5 pb-5" id="pills-tabContent">
+                        <div class="tab-pane fade active show" id="pills-info" role="tabpanel" aria-labelledby="pills-info-tab">
+                            <div class="container-fluid">
+                                <div class="row align-items-center justify-content-between">
+                                    <div class="col-12 col-md-5  text-left">
+                                        <h2>{{ item.title }} </h2>
+                                        <h6 class=" mt-4">Category: <a href="{% url 'category_item' item.category.pk %}">{{ item.category }}</a></h6>
+                                        <p class=" mt-4">{{ item.description }} </p>
+                                        <h6>Comments:</h6>
+
+                                    <!-- Show Comment -->
+                                    {% if comments %}
+                                    	{% for comment in comments %}
+                                        <blockquote class="card  text-left  py-3 px-4 mb-3 mt-4  ">
+                                            <div class="row align-items-center justify-content-between">
+                                                <div class="col-3  p-md-1 text-center rounded">
+                                                    {% if item.imageUrl %}
+                                                    <img src="{{ item.imageUrl }}" class="img-fluid py-0 rounded" alt="features">
+                                                    {% else %}
+                                                    <img src="{{ item.image.url }}" class="img-fluid py-0 rounded" alt="features">
+                                                    {% endif %}
+                                                    <footer class="blockquote-footer small p-1"><span class="small">{{ comment.auther }}</span>
+
+                                                    </footer>
+
+                                                </div>
+                                                <div class="col-9 position-relative">
+                                                    <p class=" m-0 text-muted small">
+                                                        {{ comment.text }}
+                                                    </p>
+                                                    {% if  comment.auther == user %}
+                                                        <form action="{% url 'comment_del' comment.pk %}" method="post">
+                                                        {% csrf_token %}
+                                                            <button class="fa fa-fire fa-2x text-muted pull-right mt-3" aria-hidden="true"></button>
+                                                        </form>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </blockquote>
+                                    {% endfor %}
+                                    {% else %}
+                                        <blockquote class="card  text-left  py-3 px-4 mb-3 mt-4  ">
+                                            <div class="row align-items-center justify-content-between">
+                                                <div class="col-3  p-md-1 text-center rounded">
+                                                    {% if item.imageUrl %}
+                                                    <img src="{{ item.imageUrl }}" class="img-fluid py-0 rounded" alt="features">
+                                                    {% else %}
+                                                    <img src="{{ item.image.url }}" class="img-fluid py-0 rounded" alt="features">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="col-9 position-relative">
+                                                    <p class=" m-0 text-muted small">
+                                                        NOTING HERE !!!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </blockquote>
+                                    {% endif %}
+
+                                    <!--Add Comment -->
+                                    <form action="{% url 'list_detail' item.pk %}" method="post">
+                                    {% csrf_token %}
+                                    {{ com_form.as_p }}
+                                    <button type="submit" class="btn btn-primary  btn-rounded shadow py-3 px-5 mt-md-3 mt-2">Add Comment</button>
+                                    </form>
+
+
+
+                                    <!--Close auction -->
+                                    {% if item.isActive %}
+                                        {% if item.auther == user %}
+                                            <a href="{% url 'bid_end' list_id=item.pk %}" class="btn btn-primary  btn-rounded shadow py-3 px-5 mt-md-3 mt-2">End Auction</a>
+                                        {% endif %}
+                                    {% endif %}
+
+                                    </div>
+                                    <div class="col-12 col-md-5 mb-4 ml-md-auto">
+
+                                    <!-- Add to watchlist -->
+                                        {% if watch %}
+                                        <form action="{% url 'rm_watch' item.pk %}" method="post">
+                                        {% csrf_token %}
+                                            <input class="btn" type="submit" value="💔">
+                                        </form>
+                                        {% else %}
+                                        <form action="{% url 'add_watch' item.pk %}" method="post">
+                                        {% csrf_token %}
+                                            <input class="btn" type="submit" value="❤️">
+                                        </form>
+                                        {% endif %}
+
+                                        {% if item.imageUrl %}
+                                        <img alt="image" class="img-fluid img-center mr-auto ml-auto d-none d-md-block" src="{{ item.imageUrl }}">
+                                        {% else %}
+                                        <img alt="image" class="img-fluid img-center mr-auto ml-auto d-none d-md-block" src="{{ item.image.url }}">
+                                        {% endif %}
+                                        <footer class="blockquote-footer"><span class="small"><h6>Price:</h6><h4>$ {{ item.price }}</h4></span>
+
+                                        <p><strong>Highest Bid: </strong>{{ last_bid.bid }}</p>
+                                        <form action="{% url 'bid_place' item.pk %}" method="post">
+                                        {% csrf_token %}
+                                            {% if massage %}
+                                                <p>{{ massage }}</p>
+                                            {% endif %}
+                                            <input class="form-control" type="number" name="bid_in" id="bid_in" required min="{{ item.price }}">
+                                            <button class="btn" type="submit">bid</button>
+                                        </form>
+
+                                        </footer>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% else %}
-        <div style="max-height: 250px; max-width: 250px;">
-            <img style="max-height: 250px" src="{{ item.image.url }}" alt="{{ item.title }} || {{ item.description }}">
-        </div>
-    {% endif %}
-    <p>Description:</p>
-    <pre>{{ item.description }}</pre>
-    <p>category:</p>
-    {{ item.category }}
-
-
-    {% if watch %}
-        <form action="{% url 'rm_watch' item.pk %}" method="post">
-        {% csrf_token %}
-            <input type="submit" value="REMOVE">
-        </form>
-    {% else %}
-        <form action="{% url 'add_watch' item.pk %}" method="post">
-        {% csrf_token %}
-            <input type="submit" value="ADD...">
-        </form>
-    {% endif %}
-    <p><strong>Start Price: </strong>{{ item.price }}</p>
-    <p><strong>Highest Bid: </strong>{{ last_bid.bid }}</p>
-    <form action="{% url 'bid_place' item.pk %}" method="post">
-    {% csrf_token %}
-        {% if massage %}
-            <p>{{ massage }}</p>
-        {% endif %}
-        <input type="number" name="bid_in" id="bid_in" required>
-        <button type="submit">bid</button>
-    </form>
-    <h3>Comments:</h3>
-    {% if comments %}
-    	{% for comment in comments %}
-    		{{ comment.text }}
-            {% if  comment.auther == user %}
-                <form action="{% url 'comment_del' comment.pk %}" method="post">
-                {% csrf_token %}
-                    <button type="submit">Del</button>
-                </form>
-            {% endif %}
-    	{% endfor %}
-    {% else %}
-        <p>Noting here...</p>
-    {% endif %}
-    <form action="{% url 'list_detail' item.pk %}" method="post">
-    {% csrf_token %}
-    {{ com_form.as_p }}
-        <button type="submit">add comment</button>
-    </form>
-    {% if item.isActive %}
-        <a href="{% url 'bid_end' list_id=item.pk %}">Close</a>
-    {% endif %}
-
+    </div>
+</section>
 
 
 {% endblock %}
