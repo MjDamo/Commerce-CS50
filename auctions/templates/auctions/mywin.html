@@ -1,30 +1,30 @@
 {% extends "auctions/layout.html" %}
-{% block title %}Watchlist{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
 
 {% block body %}
 
-    {% if items %}
+    {% if all_win %}
         <div>
             <div class="cards-8 section-gray">
                 <div class="container">
                     <div class="row">
-                        {% for item in items %}
+                        {% for win in all_win %}
                         <div class="col-md-3">
                             <div class="card card-product">
                                 <div class="card-image">
-                                    {% if item.item.imageUrl %}
-                                    <a href="{% url 'list_detail' list_id=item.item.pk %}"> <img class="img" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}||{{ item.item.description }}"> </a>
+                                    {% if all_win.imageUrl %}
+                                    <a href="{% url 'list_detail' list_id=all_win.pk %}"> <img class="img" src="{{ all_win.imageUrl }}" alt="{{ all_win.title }}||{{ all_win.description }}"> </a>
                                     {% else  %}
-                                    <a href="{% url 'list_detail' list_id=item.item.pk %}"> <img class="img" src="{{ item.item.image.url }}" alt="{{ item.item.title }}||{{ item.item.description }}"> </a>
+                                    <a href="{% url 'list_detail' list_id=all_win.pk %}"> <img class="img" src="{{ all_win.image.url }}" alt="{{ all_win.title }}||{{ all_win.description }}"> </a>
                                     {% endif %}
                                 </div>
                                 <div class="table">
-                                    <h6 class="category text-rose">{{ item.item.category }}</h6>
+                                    <h6 class="category text-rose">{{ all_win.category }}</h6>
                                     <h4 class="card-caption">
-    						        <a href="{% url 'list_detail' list_id=item.item.pk %}">{{ item.item.title }}</a>
+    						        <a href="{% url 'list_detail' list_id=all_win.pk %}">{{ all_win.title }}</a>
     					            </h4>
                                     <div class="category">
-                                        <form action="{% url 'rm_watch' item.item.pk %}" method="post">
+                                        <form action="{% url 'rm_watch' all_win.pk %}" method="post">
                                             {% csrf_token %}
                                             <button  type="submit" rel="tooltip" title="" class="btn btn-danger" data-original-title="Saved to Wishlist">Remove</button>
                                         </form>

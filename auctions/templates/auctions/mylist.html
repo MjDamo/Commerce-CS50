@@ -1,5 +1,5 @@
 {% extends "auctions/layout.html" %}
-{% block title %}Watchlist{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
 
 {% block body %}
 
@@ -12,19 +12,19 @@
                         <div class="col-md-3">
                             <div class="card card-product">
                                 <div class="card-image">
-                                    {% if item.item.imageUrl %}
-                                    <a href="{% url 'list_detail' list_id=item.item.pk %}"> <img class="img" src="{{ item.item.imageUrl }}" alt="{{ item.item.title }}||{{ item.item.description }}"> </a>
+                                    {% if item.imageUrl %}
+                                    <a href="{% url 'list_detail' list_id=item.pk %}"> <img class="img" src="{{ item.imageUrl }}" alt="{{ item.title }}||{{ item.description }}"> </a>
                                     {% else  %}
-                                    <a href="{% url 'list_detail' list_id=item.item.pk %}"> <img class="img" src="{{ item.item.image.url }}" alt="{{ item.item.title }}||{{ item.item.description }}"> </a>
+                                    <a href="{% url 'list_detail' list_id=item.pk %}"> <img class="img" src="{{ item.image.url }}" alt="{{ item.title }}||{{ item.description }}"> </a>
                                     {% endif %}
                                 </div>
                                 <div class="table">
-                                    <h6 class="category text-rose">{{ item.item.category }}</h6>
+                                    <h6 class="category text-rose">{{ item.category }}</h6>
                                     <h4 class="card-caption">
-    						        <a href="{% url 'list_detail' list_id=item.item.pk %}">{{ item.item.title }}</a>
+    						        <a href="{% url 'list_detail' list_id=item.pk %}">{{ item.title }}</a>
     					            </h4>
                                     <div class="category">
-                                        <form action="{% url 'rm_watch' item.item.pk %}" method="post">
+                                        <form action="{% url 'rm_watch' item.pk %}" method="post">
                                             {% csrf_token %}
                                             <button  type="submit" rel="tooltip" title="" class="btn btn-danger" data-original-title="Saved to Wishlist">Remove</button>
                                         </form>

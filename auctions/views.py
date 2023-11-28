@@ -260,14 +260,14 @@ def watch_list(request):
 #     queryset = Listing.objects.all()
 #     context_object_name = 'items'
 #     paginate_by = 2
-#     template_name = 'auctions/myacc.html'
+#     template_name = 'auctions/mylist.html'
 
 
 @login_required
 def my_acc(request):
     items = Listing.objects.filter(auther=request.user).all()
     all_win = Listing.objects.filter(winner=request.user).all()
-    return render(request, 'auctions/myacc.html',
+    return render(request, 'auctions/mylist.html',
                   context={
                       'items': items,
                       'all_win': all_win,

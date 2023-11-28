@@ -5,7 +5,8 @@ from . import views
 urlpatterns = [
     path("", views.ItemListView.as_view(), name="index"),
     # path("myacc", views.MyAccView.as_view(), name="myacc"),
-    path("my_acc", views.my_acc, name="my_acc"),
+    path("mylist", views.my_acc, name="my_acc"),
+    path("mywin", views.my_acc, name="my_acc"),
     path("login", views.login_view, name="login"),
     path("logout", views.logout_view, name="logout"),
     path("register", views.register, name="register"),
