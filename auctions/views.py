@@ -128,9 +128,14 @@ def bid_place(request, list_id):
         if bid_in_dec >= item.price:
             highest_bid = Bid.objects.filter(item_bid=item).order_by('-bid').first()
 
-            if highest_bid is None or bid_in_dec > highest_bid.bid:
+            if highest_bid is None or bid_in_dec > highest_bid.bid and (item.isActive == True):
                 Bid.objects.create(user=user, item_bid=item, bid=bid_in)
                 return redirect('list_detail', list_id=list_id)
+            elif not item.isActive:
+                return render(request, 'auctions/detail-alarm.html', context={
+                    'massage': "This auction is close!"
+                })
+
             else:
                 return render(request, 'auctions/detail-alarm.html', context={
                     'massage': "Your bid most be greader than latest bid!"
@@ -190,7 +195,6 @@ def comment_del(request, com_id):
     comment = get_object_or_404(Comment, pk=com_id)
     if comment.auther == request.user:
         comment.delete()
-    # return HttpResponseRedirect(reverse('list_detail', args=[comment.item.pk]))
     return redirect('list_detail', list_id=comment.item.pk)
 
 
@@ -221,9 +225,9 @@ def bid_end(request, list_id):
         if high_bid:
             item.winner = high_bid.user
             item.highest_bidder = high_bid.user
+            item.bid = Decimal(high_bid.bid)
             item.save()
         item.save()
-        # bid = item.bid
         if Decimal(high_bid.bid) < Decimal(item.price):
             item.highest_bidder = request.user
             item.winner = request.user
@@ -256,20 +260,23 @@ def watch_list(request):
                   })
 
 
-# class MyAccView(ListView):
-#     queryset = Listing.objects.all()
-#     context_object_name = 'items'
-#     paginate_by = 2
-#     template_name = 'auctions/mylist.html'
-
-
 @login_required
 def my_acc(request):
     items = Listing.objects.filter(auther=request.user).all()
-    all_win = Listing.objects.filter(winner=request.user).all()
     return render(request, 'auctions/mylist.html',
                   context={
                       'items': items,
-                      'all_win': all_win,
+                  })
+
+
+@login_required
+def my_win(request):
+    items = Listing.objects.filter(isActive=False).all()
+    win = items.filter(winner=request.user).all()
+    bid = items.filter(bid=win)
+    return render(request, 'auctions/mywin.html',
+                  context={
+                      'all_win': win,
+                      'bid': bid,
                   })
 

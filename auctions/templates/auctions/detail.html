@@ -15,7 +15,10 @@
                                     <div class="col-12 col-md-5  text-left">
                                         <h2>{{ item.title }} </h2>
                                         <h6 class=" mt-4">Category: <a href="{% url 'category_item' item.category.pk %}">{{ item.category }}</a></h6>
+                                        <hr>
+                                        <h6>Description:</h6>
                                         <p class=" mt-4">{{ item.description }} </p>
+                                        <hr>
                                         <h6>Comments:</h6>
 
                                     <!-- Show Comment -->
@@ -53,9 +56,9 @@
                                             <div class="row align-items-center justify-content-between">
                                                 <div class="col-3  p-md-1 text-center rounded">
                                                     {% if item.imageUrl %}
-                                                    <img src="{{ item.imageUrl }}" class="img-fluid py-0 rounded" alt="features">
+                                                        <img src="{{ item.imageUrl }}" class="img-fluid py-0 rounded" alt="features">
                                                     {% else %}
-                                                    <img src="{{ item.image.url }}" class="img-fluid py-0 rounded" alt="features">
+                                                        <img src="{{ item.image.url }}" class="img-fluid py-0 rounded" alt="features">
                                                     {% endif %}
                                                 </div>
                                                 <div class="col-9 position-relative">
@@ -68,18 +71,26 @@
                                     {% endif %}
 
                                     <!--Add Comment -->
+                                    {% if item.isActive == True %}
                                     <form action="{% url 'list_detail' item.pk %}" method="post">
                                     {% csrf_token %}
                                     {{ com_form.as_p }}
                                     <button type="submit" class="btn btn-primary  btn-rounded shadow py-3 px-5 mt-md-3 mt-2">Add Comment</button>
                                     </form>
+                                    {% else %}
+                                    <form action="{% url 'list_detail' item.pk %}" method="post">
+                                    {% csrf_token %}
+                                    {{ com_form.as_p }}
+                                    <button disabled type="submit" class="btn btn-primary  btn-rounded shadow py-3 px-5 mt-md-3 mt-2">Add Comment</button>
+                                    </form>
+                                    {% endif %}
 
 
 
                                     <!--Close auction -->
                                     {% if item.isActive %}
                                         {% if item.auther == user %}
-                                            <a href="{% url 'bid_end' list_id=item.pk %}" class="btn btn-primary  btn-rounded shadow py-3 px-5 mt-md-3 mt-2">End Auction</a>
+                                            <a href="{% url 'bid_end' list_id=item.pk %}" class="btn btn-danger  btn-rounded shadow py-3 px-5 mt-md-3 mt-2">End Auction</a>
                                         {% endif %}
                                     {% endif %}
 
@@ -112,8 +123,13 @@
                                             {% if massage %}
                                                 <p>{{ massage }}</p>
                                             {% endif %}
+                                            {% if item.isActive == True %}
                                             <input class="form-control" type="number" name="bid_in" id="bid_in" required min="{{ item.price }}">
                                             <button class="btn" type="submit">bid</button>
+                                            {% else %}
+                                            <input disabled class="form-control" type="number" name="bid_in" id="bid_in" required min="{{ item.price }}">
+                                            <button disabled class="btn" type="submit">bid</button>
+                                            {% endif %}
                                         </form>
 
                                         </footer>

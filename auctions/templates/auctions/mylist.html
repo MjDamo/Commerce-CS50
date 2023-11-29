@@ -1,5 +1,5 @@
 {% extends "auctions/layout.html" %}
-{% block title %}{{ user.username }}{% endblock %}
+{% block title %}{{ user.username }}-lists{% endblock %}
 
 {% block body %}
 
@@ -24,10 +24,11 @@
     						        <a href="{% url 'list_detail' list_id=item.pk %}">{{ item.title }}</a>
     					            </h4>
                                     <div class="category">
-                                        <form action="{% url 'rm_watch' item.pk %}" method="post">
-                                            {% csrf_token %}
-                                            <button  type="submit" rel="tooltip" title="" class="btn btn-danger" data-original-title="Saved to Wishlist">Remove</button>
-                                        </form>
+                                        {% if item.isActive %}
+                                        <button  type="submit" rel="tooltip" title="" class="btn btn-success" data-original-title="Saved to Wishlist">ACTIVE</button>
+                                        {% else %}
+                                        <button  type="submit" rel="tooltip" title="" class="btn btn-danger" data-original-title="Saved to Wishlist">CLOSE</button>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

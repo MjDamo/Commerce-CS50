@@ -38,7 +38,7 @@ class Listing(models.Model):
     comments = models.ManyToManyField('Comment', blank=True, related_name='item_comment')
 
     def __str__(self):
-        return f"{self.title}, {self.auther}, {self.category}, {self.WatchList}"
+        return f"{self.title}, {self.auther}, {self.category}, {self.WatchList}, {self.winner}, {self.bid}"
 
 
 class Comment(models.Model):
@@ -48,7 +48,7 @@ class Comment(models.Model):
     publish = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Write by: {Comment.auther.username} {self.text}{self.item.title}"
+        return f"Write by: {self.auther} {self.text}{self.item.title}"
 
 
 class Bid(models.Model):

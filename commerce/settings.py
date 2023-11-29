@@ -124,5 +124,5 @@ STATIC_URL = 'auctions/static/'
 
 # Media files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'auctions/media/')
-MEDIA_URL = "auctions/media/"
+MEDIA_URL = "/media/gallery/"
 
