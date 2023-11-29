@@ -37,6 +37,7 @@
                                                     </footer>
 
                                                 </div>
+
                                                 <div class="col-9 position-relative">
                                                     <p class=" m-0 text-muted small">
                                                         {{ comment.text }}
@@ -71,7 +72,7 @@
                                     {% endif %}
 
                                     <!--Add Comment -->
-                                    {% if item.isActive == True %}
+                                    {% if item.isActive == True and user.is_authenticated %}
                                     <form action="{% url 'list_detail' item.pk %}" method="post">
                                     {% csrf_token %}
                                     {{ com_form.as_p }}
@@ -98,6 +99,7 @@
                                     <div class="col-12 col-md-5 mb-4 ml-md-auto">
 
                                     <!-- Add to watchlist -->
+                                    {% if user.is_authenticated %}
                                         {% if watch %}
                                         <form action="{% url 'rm_watch' item.pk %}" method="post">
                                         {% csrf_token %}
@@ -109,6 +111,9 @@
                                             <input class="btn" type="submit" value="❤️">
                                         </form>
                                         {% endif %}
+                                    {% else %}
+                                        <input disabled class="btn" type="submit" value="❤️">
+                                    {% endif %}
 
                                         {% if item.imageUrl %}
                                         <img alt="image" class="img-fluid img-center mr-auto ml-auto d-none d-md-block" src="{{ item.imageUrl }}">
@@ -130,7 +135,7 @@
                                             {% if massage %}
                                                 <p>{{ massage }}</p>
                                             {% endif %}
-                                            {% if item.isActive == True and not item.auther == user%}
+                                            {% if item.isActive == True and not item.auther == user and user.is_authenticated%}
                                             <input class="form-control" type="number" name="bid_in" id="bid_in" required min="{{ item.price }}">
                                             <button class="btn" type="submit">bid</button>
                                             {% else %}
