@@ -24,8 +24,9 @@
     						        <a href="{% url 'list_detail' list_id=win.pk %}">{{ win.title }}</a>
     					            </h4>
                                     <div class="category">
-                                        <button  type="submit" rel="tooltip" title="" class="btn btn-danger" data-original-title="Saved to Wishlist">
-                                            {{ win.bid }}</button>
+
+                                        <button  type="submit" rel="tooltip" title="" class="btn btn-success" data-original-title="Saved to Wishlist">
+                                            You win : {{ win.bid }} $</button>
                                     </div>
                                 </div>
                             </div>

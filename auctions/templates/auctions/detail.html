@@ -115,15 +115,22 @@
                                         {% else %}
                                         <img alt="image" class="img-fluid img-center mr-auto ml-auto d-none d-md-block" src="{{ item.image.url }}">
                                         {% endif %}
-                                        <footer class="blockquote-footer"><span class="small"><h6>Price:</h6><h4>$ {{ item.price }}</h4></span>
 
+                                        <footer class="blockquote-footer"><span class="small">
+
+                                        {% if item.auther == user %}
+                                            <h6>Owner : You</h6>
+                                        {% else %}
+                                            <h6>Owner : {{ item.auther }}</h6>
+                                        {% endif %}
+                                        <h6>Price:</h6><h4>$ {{ item.price }}</h4></span>
                                         <p><strong>Highest Bid: </strong>{{ last_bid.bid }}</p>
                                         <form action="{% url 'bid_place' item.pk %}" method="post">
                                         {% csrf_token %}
                                             {% if massage %}
                                                 <p>{{ massage }}</p>
                                             {% endif %}
-                                            {% if item.isActive == True %}
+                                            {% if item.isActive == True and not item.auther == user%}
                                             <input class="form-control" type="number" name="bid_in" id="bid_in" required min="{{ item.price }}">
                                             <button class="btn" type="submit">bid</button>
                                             {% else %}

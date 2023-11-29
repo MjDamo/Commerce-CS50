@@ -273,10 +273,8 @@ def my_acc(request):
 def my_win(request):
     items = Listing.objects.filter(isActive=False).all()
     win = items.filter(winner=request.user).all()
-    bid = items.filter(bid=win)
     return render(request, 'auctions/mywin.html',
                   context={
                       'all_win': win,
-                      'bid': bid,
                   })
 
