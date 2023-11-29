@@ -153,7 +153,10 @@ def bid_place(request, list_id):
 def list_detail(request, list_id):
     item = get_object_or_404(Listing, pk=list_id)
     comments = item.item_comment.all()
-    watch = Watchlist.objects.filter(user=request.user, item=item)
+    try:
+        watch = Watchlist.objects.filter(user=request.user, item=item)
+    except:
+        watch = None
     try:
         last_bid = Bid.objects.filter(item_bid=item).order_by('-bid_date').first()
     except:
