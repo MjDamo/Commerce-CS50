@@ -48,7 +48,7 @@ class Comment(models.Model):
     publish = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Write by: {self.auther} {self.text}{self.item.title}"
+        return f"Write by: {self.auther} {self.text}{self.item}"
 
 
 class Bid(models.Model):
